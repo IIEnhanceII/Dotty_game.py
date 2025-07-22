@@ -1,0 +1,111 @@
+#Dotty game. Here, you and your opponent would choose a number from 1-10. You both would be unaware of the sum. Now you both would have to guess the sum.
+
+# Rules:
+"""The guessed sum cannot be an impossible no. i.e. if you chose 10, then you cannot guess the sum to be <=10. As that would be impossible. 
+and if you chose 1, you cannot guess >=12 as that would be impossible
+
+if one is to choose an impossible no. it would loose.
+
+The impossible no. restriction only works if the player chooses the sum to be less than or equal to his number or more than supposedly maximum number. it doesn't work otherwise. For. ex: you choose 1 and guessed 9, here you won't lose even if opponent had taken 10""" 
+
+
+import random as r
+import time
+
+
+#list sorting
+def ai_list_sorting(choice, ai_list):
+    removed = 0
+    if choice in range(1,11):
+        for x in range(choice,11):
+            if x in ai_list:
+                ai_list.remove(x)
+                removed += 1
+    elif choice in range(11,21):
+        for x in range(1,choice-10):#11= 1 is false. but, if choose 15 =  1,2,3,4 are false
+            if x in ai_list:
+                ai_list.remove(x)
+                removed += 1
+    else:
+        if choice in ai_list:
+            ai_list.remove(choice)
+            removed += 1
+    if len(ai_list) == 1:
+        printing("....Was that it?")
+    elif removed == 0:
+        printing("That was a good guess!")
+    else:
+        printing(f"Ai removed {removed} elements from its list",delay=0.2)
+    
+    return ai_list
+
+
+
+#dramatic printing
+def printing(comment,delay =0.1):
+    
+    for char in comment:
+        print(char, end="")
+        time.sleep(delay)
+    print("\n")
+        
+#Main game
+while True:
+    try:
+        #User Choice
+        user_choice = int(input("\nEnter a number [1-10]: "))
+        if user_choice not in range(1,11):
+            printing("||Please choose and integer in range, 1-10...")
+    except ValueError:
+        print("Violation of rules. Please choose an integer")
+        break 
+    verdict= [_ for _ in range(user_choice+1,min(21,user_choice+11))]
+
+    # Ai would choose from a list
+    ai_choice = r.randint(1,10)
+    ai_list = [_ for _ in range(1,11)]
+
+
+    #correct answer
+    answer = ai_choice+user_choice
+
+    #Ai would remove used numbers too
+    while True:
+        try:
+            user_guess= int(input("Enter your guess: "))
+        except ValueError:
+            continue
+        if user_guess not in verdict:
+            printing("You made an illegal move")
+            break
+        else:
+            if user_guess == answer:
+                printing("|+--You Won!--+|")
+                break
+            else:
+                printing("----incorrect guess----")
+                ai_list_sorting(user_guess,ai_list)
+                
+        #Ai turn
+        ai_guess = ai_choice + r.choice(ai_list)
+        if ai_guess ==answer:
+            print(ai_guess)
+            printing("|+---Ai WON---+|")
+            print(ai_choice)
+            break
+        else:
+            printing(f"Ai was wrong, {ai_guess}")
+            print(ai_guess-ai_choice)
+            ai_list.remove(ai_guess-ai_choice)
+            
+    #restarting
+    print("|> Would you like to try again? <|")
+    printing("(press 'any key' for yes and 'n' for no)")
+    repeat = input()
+    if repeat == "n":
+        printing("--THANKYOU FOR YOUR TIME--")
+        break
+    else:
+        printing("THANK YOU FOR REPLAYING")
+        continue
+        
