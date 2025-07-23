@@ -1,14 +1,3 @@
-#Dotty game. Here, you and your opponent would choose a number from 1-10. You both would be unaware of the sum. Now you both would have to guess the sum.
-
-# Rules:
-"""The guessed sum cannot be an impossible no. i.e. if you chose 10, then you cannot guess the sum to be <=10. As that would be impossible. 
-and if you chose 1, you cannot guess >=12 as that would be impossible
-
-if one is to choose an impossible no. it would loose.
-
-The impossible no. restriction only works if the player chooses the sum to be less than or equal to his number or more than supposedly maximum number. it doesn't work otherwise. For. ex: you choose 1 and guessed 9, here you won't lose even if opponent had taken 10""" 
-
-
 import random as r
 import time
 
